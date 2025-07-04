@@ -8,7 +8,6 @@ const navigation = [
     { name: 'Contacts', href: '/contacts', icon: 'Users' },
     { name: 'Deals', href: '/deals', icon: 'DollarSign' },
     { name: 'Tasks', href: '/tasks', icon: 'CheckSquare' },
-    { name: 'Kanban', href: '/kanban', icon: 'Columns' },
     { name: 'Reports', href: '/reports', icon: 'FileText' },
   ]
 
