@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
-import { format } from 'date-fns'
-import taskService from '@/services/api/taskService'
-import dealService from '@/services/api/dealService'
-import contactService from '@/services/api/contactService'
-import kanbanViewService from '@/services/api/kanbanViewService'
-import Card from '@/components/atoms/Card'
-import Badge from '@/components/atoms/Badge'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import ApperIcon from '@/components/ApperIcon'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import { format } from "date-fns";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import contactService from "@/services/api/contactService";
+import taskService from "@/services/api/taskService";
+import kanbanViewService from "@/services/api/kanbanViewService";
+import dealService from "@/services/api/dealService";
 const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -375,6 +375,19 @@ const KanbanBoard = ({ showAddForm, onAddFormClose, entity = 'task' }) => {
   const [error, setError] = useState('')
   const [boardConfig, setBoardConfig] = useState(null)
 
+  // Get the status field name based on entity type
+  const getStatusField = () => {
+    switch (entity) {
+      case 'task':
+        return 'status'
+      case 'deal':
+        return 'stage'
+      case 'app_contact':
+        return 'status'
+      default:
+        return 'status'
+    }
+  }
   const getService = () => entity === 'task' ? taskService : dealService
   
   const getColumns = () => {
@@ -393,10 +406,7 @@ const KanbanBoard = ({ showAddForm, onAddFormClose, entity = 'task' }) => {
         { id: 'closed', title: 'Closed', color: 'green-400' }
       ]
     }
-  }
-
-  const getStatusField = () => entity === 'task' ? 'status' : 'stage'
-const loadItems = async () => {
+}
     try {
       setLoading(true)
       setError('')
