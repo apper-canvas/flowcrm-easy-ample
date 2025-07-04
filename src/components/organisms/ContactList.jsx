@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import contactService from '@/services/api/contactService'
-import Card from '@/components/atoms/Card'
-import Badge from '@/components/atoms/Badge'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import ApperIcon from '@/components/ApperIcon'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import contactService from "@/services/api/contactService";
 
 const AddContactForm = ({ isOpen, onClose, onContactAdded }) => {
   const [formData, setFormData] = useState({
@@ -228,6 +228,7 @@ const AddContactForm = ({ isOpen, onClose, onContactAdded }) => {
 
 const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAddFormClose }) => {
   const [contacts, setContacts] = useState([])
+  const [selectedContacts, setSelectedContacts] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -262,8 +263,62 @@ const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAd
     }
   }
 
-  const handleContactAdded = (newContact) => {
+const handleContactAdded = (newContact) => {
     setContacts(prev => [newContact, ...prev])
+  }
+
+  const handleSelectContact = (contactId) => {
+    setSelectedContacts(prev => {
+      const newSelected = new Set(prev)
+      if (newSelected.has(contactId)) {
+        newSelected.delete(contactId)
+      } else {
+        newSelected.add(contactId)
+      }
+      return newSelected
+    })
+  }
+
+  const handleSelectAllContacts = () => {
+    if (selectedContacts.size === filteredContacts.length) {
+      setSelectedContacts(new Set())
+    } else {
+      setSelectedContacts(new Set(filteredContacts.map(c => c.Id)))
+    }
+  }
+
+  const handleBulkStatusUpdate = async (status) => {
+    if (selectedContacts.size === 0) return
+    
+    const contactIds = Array.from(selectedContacts)
+    try {
+      await contactService.updateBulk(contactIds, { status })
+      setContacts(prev => prev.map(contact => 
+        selectedContacts.has(contact.Id) 
+          ? { ...contact, status }
+          : contact
+      ))
+      setSelectedContacts(new Set())
+      toast.success(`Updated ${contactIds.length} contact(s) status to ${status}`)
+    } catch (err) {
+      toast.error('Failed to update contact status')
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedContacts.size === 0) return
+    
+    const contactIds = Array.from(selectedContacts)
+    if (window.confirm(`Are you sure you want to delete ${contactIds.length} contact(s)?`)) {
+      try {
+        await contactService.deleteBulk(contactIds)
+        setContacts(prev => prev.filter(contact => !selectedContacts.has(contact.Id)))
+        setSelectedContacts(new Set())
+        toast.success(`Deleted ${contactIds.length} contact(s) successfully`)
+      } catch (err) {
+        toast.error('Failed to delete contacts')
+      }
+    }
   }
 
 const filteredContacts = contacts.filter(contact => {
@@ -285,38 +340,105 @@ const filteredContacts = contacts.filter(contact => {
   if (error) return <Error message={error} onRetry={loadContacts} />
   if (filteredContacts.length === 0) return <Empty message="No contacts found" />
 
-  return (
+return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredContacts.map((contact) => (
-          <motion.div
-            key={contact.Id}
-            initial={{ opacity: 0, y: 20 }}
+      {/* Bulk Action Toolbar */}
+      {selectedContacts.size > 0 && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-blue-900">
+                {selectedContacts.size} contact(s) selected
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBulkStatusUpdate('active')}
+                >
+                  Mark Active
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleBulkStatusUpdate('inactive')}
+                >
+                  Mark Inactive
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={handleBulkDelete}
+                  icon="Trash2"
+                >
+                  Delete Selected
+                </Button>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedContacts(new Set())}
+            >
+              Clear Selection
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {/* Select All Checkbox */}
+        {filteredContacts.length > 0 && (
+          <div className="flex items-center gap-2 p-2">
+            <input
+              type="checkbox"
+              checked={selectedContacts.size === filteredContacts.length && filteredContacts.length > 0}
+              onChange={handleSelectAllContacts}
+              className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+            />
+            <label className="text-sm text-gray-600">
+              Select all contacts ({filteredContacts.length})
+            </label>
+          </div>
+        )}
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {filteredContacts.map((contact) => (
+            <motion.div
+              key={contact.Id}
+              initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-          >
-            <Card hover className="p-6">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {contact.name}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">{contact.company}</p>
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                    <ApperIcon name="Mail" size={14} />
-                    {contact.email}
+>
+              <Card hover className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3 flex-1">
+                    <input
+                      type="checkbox"
+                      checked={selectedContacts.has(contact.Id)}
+                      onChange={() => handleSelectContact(contact.Id)}
+className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                    />
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                        {contact.name}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-2">{contact.company}</p>
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                        <ApperIcon name="Mail" size={14} />
+                        {contact.email}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                        <ApperIcon name="Phone" size={14} />
+                        {contact.phone}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <ApperIcon name="Phone" size={14} />
-                    {contact.phone}
-                  </div>
+                  <Badge variant={contact.status === 'active' ? 'success' : 'default'}>
+                    {contact.status}
+                  </Badge>
                 </div>
-                <Badge variant={contact.status === 'active' ? 'success' : 'default'}>
-                  {contact.status}
-                </Badge>
-              </div>
-              
-{contact.tags?.length > 0 && (
+                {contact.tags?.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-4">
                   {contact.tags.map((tag) => (
                     <Badge key={tag} variant="secondary" size="sm">
@@ -343,8 +465,9 @@ const filteredContacts = contacts.filter(contact => {
                 />
               </div>
             </Card>
-          </motion.div>
-        ))}
+</motion.div>
+          ))}
+        </div>
       </div>
 
       <AddContactForm

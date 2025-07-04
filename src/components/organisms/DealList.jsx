@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
-import dealService from '@/services/api/dealService'
-import contactService from '@/services/api/contactService'
-import Card from '@/components/atoms/Card'
-import Badge from '@/components/atoms/Badge'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import ApperIcon from '@/components/ApperIcon'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import contactService from "@/services/api/contactService";
+import dealService from "@/services/api/dealService";
 
 const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
   const [formData, setFormData] = useState({
@@ -486,6 +486,7 @@ const EditDealForm = ({ isOpen, onClose, onDealUpdated, deal, contacts }) => {
 const DealList = ({ searchQuery = '', filters = [], showAddForm = false, onAddFormClose }) => {
   const [deals, setDeals] = useState([])
   const [contacts, setContacts] = useState([])
+  const [selectedDeals, setSelectedDeals] = useState(new Set())
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -537,8 +538,80 @@ const DealList = ({ searchQuery = '', filters = [], showAddForm = false, onAddFo
     setDeals(prev => [newDeal, ...prev])
   }
 
-  const handleDealUpdated = (updatedDeal) => {
+const handleDealUpdated = (updatedDeal) => {
     setDeals(prev => prev.map(deal => deal.Id === updatedDeal.Id ? updatedDeal : deal))
+  }
+
+  const handleSelectDeal = (dealId) => {
+    setSelectedDeals(prev => {
+      const newSelected = new Set(prev)
+      if (newSelected.has(dealId)) {
+        newSelected.delete(dealId)
+      } else {
+        newSelected.add(dealId)
+      }
+      return newSelected
+    })
+  }
+
+  const handleSelectAllDeals = () => {
+    if (selectedDeals.size === filteredDeals.length) {
+      setSelectedDeals(new Set())
+    } else {
+      setSelectedDeals(new Set(filteredDeals.map(d => d.Id)))
+    }
+  }
+
+  const handleBulkStatusUpdate = async (status) => {
+    if (selectedDeals.size === 0) return
+    
+    const dealIds = Array.from(selectedDeals)
+    try {
+      await dealService.updateBulk(dealIds, { status })
+      setDeals(prev => prev.map(deal => 
+        selectedDeals.has(deal.Id) 
+          ? { ...deal, status }
+          : deal
+      ))
+      setSelectedDeals(new Set())
+      toast.success(`Updated ${dealIds.length} deal(s) status to ${status}`)
+    } catch (err) {
+      toast.error('Failed to update deal status')
+    }
+  }
+
+  const handleBulkComplete = async () => {
+    if (selectedDeals.size === 0) return
+    
+    const dealIds = Array.from(selectedDeals)
+    try {
+      await dealService.updateBulk(dealIds, { status: 'Completed', stage: 'closed' })
+      setDeals(prev => prev.map(deal => 
+        selectedDeals.has(deal.Id) 
+          ? { ...deal, status: 'Completed', stage: 'closed' }
+          : deal
+      ))
+      setSelectedDeals(new Set())
+      toast.success(`Marked ${dealIds.length} deal(s) as completed`)
+    } catch (err) {
+      toast.error('Failed to mark deals as completed')
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    if (selectedDeals.size === 0) return
+    
+    const dealIds = Array.from(selectedDeals)
+    if (window.confirm(`Are you sure you want to delete ${dealIds.length} deal(s)?`)) {
+      try {
+        await dealService.deleteBulk(dealIds)
+        setDeals(prev => prev.filter(deal => !selectedDeals.has(deal.Id)))
+        setSelectedDeals(new Set())
+        toast.success(`Deleted ${dealIds.length} deal(s) successfully`)
+      } catch (err) {
+        toast.error('Failed to delete deals')
+      }
+    }
   }
 
 const getContactName = (contactId) => {
@@ -588,9 +661,61 @@ const getContactName = (contactId) => {
   if (loading) return <Loading />
   if (error) return <Error message={error} onRetry={loadData} />
 
-  return (
+return (
     <>
       <div className="space-y-6">
+        {/* Bulk Action Toolbar */}
+        {selectedDeals.size > 0 && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium text-blue-900">
+                  {selectedDeals.size} deal(s) selected
+                </span>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleBulkStatusUpdate('In Progress')}
+                  >
+                    Mark In Progress
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleBulkStatusUpdate('On Hold')}
+                  >
+                    Mark On Hold
+                  </Button>
+                  <Button
+                    variant="success"
+                    size="sm"
+                    onClick={handleBulkComplete}
+                    icon="CheckCircle"
+                  >
+                    Mark Completed
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={handleBulkDelete}
+                    icon="Trash2"
+                  >
+                    Delete Selected
+                  </Button>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedDeals(new Set())}
+              >
+                Clear Selection
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Search and Filters */}
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="grid gap-4 md:grid-cols-3">
@@ -632,47 +757,67 @@ const getContactName = (contactId) => {
             </div>
           </div>
         </div>
-
-        {/* Deals List */}
+{/* Deals List */}
         {filteredDeals.length === 0 ? (
           <Empty message="No deals found" />
         ) : (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredDeals.map((deal) => (
-              <motion.div
-                key={deal.Id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                <Card hover className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                        {deal.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {getContactName(deal.contactId)} • {getContactCompany(deal.contactId)}
-                      </p>
-                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                        <ApperIcon name="DollarSign" size={14} />
-                        ${deal.value?.toLocaleString() || '0'}
+          <div className="space-y-4">
+            {/* Select All Checkbox */}
+            <div className="flex items-center gap-2 p-2">
+              <input
+                type="checkbox"
+                checked={selectedDeals.size === filteredDeals.length && filteredDeals.length > 0}
+                onChange={handleSelectAllDeals}
+                className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+              />
+              <label className="text-sm text-gray-600">
+                Select all deals ({filteredDeals.length})
+              </label>
+            </div>
+
+<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredDeals.map((deal) => (
+                <motion.div
+                  key={deal.Id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card hover className="p-6">
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex items-center gap-3 flex-1">
+                        <input
+                          type="checkbox"
+                          checked={selectedDeals.has(deal.Id)}
+                          onChange={() => handleSelectDeal(deal.Id)}
+                          className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                        />
+<div className="flex-1">
+                          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                            {deal.title}
+                          </h3>
+                          <p className="text-sm text-gray-600 mb-2">
+                            {getContactName(deal.contactId)} • {getContactCompany(deal.contactId)}
+                          </p>
+                          <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                            <ApperIcon name="DollarSign" size={14} />
+                            ${deal.value?.toLocaleString() || '0'}
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            <ApperIcon name="Calendar" size={14} />
+                            {deal.expectedClose ? new Date(deal.expectedClose).toLocaleDateString() : 'No date set'}
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        <ApperIcon name="Calendar" size={14} />
-                        {deal.expectedClose ? new Date(deal.expectedClose).toLocaleDateString() : 'No date set'}
+                      <div className="flex flex-col gap-2">
+                        <Badge variant={getStageColor(deal.stage)} size="sm">
+                          {deal.stage?.charAt(0).toUpperCase() + deal.stage?.slice(1)}
+                        </Badge>
+                        <Badge variant="accent" size="sm">
+                          {deal.probability || 0}%
+                        </Badge>
                       </div>
                     </div>
-                    <div className="flex flex-col gap-2">
-                      <Badge variant={getStageColor(deal.stage)} size="sm">
-                        {deal.stage?.charAt(0).toUpperCase() + deal.stage?.slice(1)}
-                      </Badge>
-                      <Badge variant="accent" size="sm">
-                        {deal.probability || 0}%
-                      </Badge>
-                    </div>
-                  </div>
-                  
                   <div className="flex items-center justify-between mb-4">
                     <Badge variant={getStatusColor(deal.status)} size="sm">
                       {deal.status}
@@ -695,10 +840,12 @@ const getContactName = (contactId) => {
                       onClick={() => handleDelete(deal.Id)}
                       className="text-error hover:text-error hover:bg-red-50"
                     />
+/>
                   </div>
                 </Card>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
+            </div>
           </div>
         )}
       </div>

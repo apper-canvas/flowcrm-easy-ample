@@ -227,6 +227,93 @@ records: [{
         console.error(error.message)
       }
       return false
+return false
+    }
+  }
+
+  async updateBulk(contactIds, updateData) {
+    try {
+      if (!this.apperClient) this.initClient()
+      
+      const params = {
+        records: contactIds.map(id => ({
+          Id: id,
+          ...updateData
+        }))
+      }
+      
+      const response = await this.apperClient.updateRecord(this.tableName, params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return false
+      }
+      
+      if (response.results) {
+        const successfulUpdates = response.results.filter(result => result.success)
+        const failedUpdates = response.results.filter(result => !result.success)
+        
+        if (failedUpdates.length > 0) {
+          console.error(`Failed to update ${failedUpdates.length} records:${JSON.stringify(failedUpdates)}`)
+          
+          failedUpdates.forEach(record => {
+            record.errors?.forEach(error => {
+              toast.error(`${error.fieldLabel}: ${error.message}`)
+            })
+            if (record.message) toast.error(record.message)
+          })
+        }
+        
+        return successfulUpdates.length > 0
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error updating contacts:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      return false
+    }
+  }
+
+  async deleteBulk(contactIds) {
+    try {
+      if (!this.apperClient) this.initClient()
+      
+      const params = {
+        RecordIds: contactIds
+      }
+      
+      const response = await this.apperClient.deleteRecord(this.tableName, params)
+      
+      if (!response.success) {
+        console.error(response.message)
+        toast.error(response.message)
+        return false
+      }
+      
+      if (response.results) {
+        const successfulDeletions = response.results.filter(result => result.success)
+        const failedDeletions = response.results.filter(result => !result.success)
+        
+        if (failedDeletions.length > 0) {
+          console.error(`Failed to delete ${failedDeletions.length} records:${JSON.stringify(failedDeletions)}`)
+          
+          failedDeletions.forEach(record => {
+            if (record.message) toast.error(record.message)
+          })
+        }
+        
+        return successfulDeletions.length > 0
+      }
+    } catch (error) {
+      if (error?.response?.data?.message) {
+        console.error("Error deleting contacts:", error?.response?.data?.message)
+      } else {
+        console.error(error.message)
+      }
+      return false
     }
   }
 }
