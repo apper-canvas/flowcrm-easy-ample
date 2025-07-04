@@ -8,8 +8,10 @@ import Button from '@/components/atoms/Button'
 const Deals = () => {
   const [view, setView] = useState('pipeline')
 
+const [showAddForm, setShowAddForm] = useState(false)
+
   const handleAddDeal = () => {
-    toast.info('Add deal form coming soon!')
+    setShowAddForm(true)
   }
 
   const handleImportDeals = () => {
@@ -74,8 +76,11 @@ const Deals = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {view === 'pipeline' ? (
-            <DealPipeline />
+{view === 'pipeline' ? (
+            <DealPipeline 
+              showAddForm={showAddForm}
+              onAddFormClose={() => setShowAddForm(false)}
+            />
           ) : (
             <div className="bg-white rounded-lg shadow-sm p-6">
               <p className="text-gray-600 text-center">

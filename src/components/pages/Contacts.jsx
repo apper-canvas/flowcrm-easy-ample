@@ -20,8 +20,10 @@ const Contacts = () => {
     { label: 'Partner', value: 'partner', icon: 'Handshake' }
   ]
 
+const [showAddForm, setShowAddForm] = useState(false)
+
   const handleAddContact = () => {
-    toast.info('Add contact form coming soon!')
+    setShowAddForm(true)
   }
 
   const handleImportContacts = () => {
@@ -77,9 +79,11 @@ const Contacts = () => {
         </Card>
 
         {/* Contact List */}
-        <ContactList 
+<ContactList 
           searchQuery={searchQuery}
           filters={activeFilters}
+          showAddForm={showAddForm}
+          onAddFormClose={() => setShowAddForm(false)}
         />
       </div>
     </div>

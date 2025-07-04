@@ -8,8 +8,10 @@ import Button from '@/components/atoms/Button'
 const Tasks = () => {
   const [view, setView] = useState('list')
 
+const [showAddForm, setShowAddForm] = useState(false)
+
   const handleAddTask = () => {
-    toast.info('Add task form coming soon!')
+    setShowAddForm(true)
   }
 
   const handleImportTasks = () => {
@@ -74,8 +76,11 @@ const Tasks = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {view === 'list' ? (
-            <TaskList />
+{view === 'list' ? (
+            <TaskList 
+              showAddForm={showAddForm}
+              onAddFormClose={() => setShowAddForm(false)}
+            />
           ) : (
             <div className="bg-white rounded-lg shadow-sm p-6">
               <p className="text-gray-600 text-center">
