@@ -12,6 +12,7 @@ import Deals from '@/components/pages/Deals'
 import Tasks from '@/components/pages/Tasks'
 import KanbanBoard from '@/components/organisms/KanbanBoard'
 import Reports from '@/components/pages/Reports'
+import CustomFields from '@/components/pages/CustomFields'
 import Login from '@/components/pages/Login'
 import Signup from '@/components/pages/Signup'
 import Callback from '@/components/pages/Callback'
@@ -132,14 +133,15 @@ function AppContent() {
           <Route path="/error" element={<ErrorPage />} />
           <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
           <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-          <Route path="/" element={<Layout />}>
+<Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="contacts" element={<Contacts />} />
-<Route path="contacts/:id" element={<ContactDetail />} />
+            <Route path="contacts/:id" element={<ContactDetail />} />
             <Route path="deals" element={<Deals />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="kanban" element={<KanbanBoard />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="custom-fields" element={<CustomFields />} />
           </Route>
         </Routes>
         <ToastContainer

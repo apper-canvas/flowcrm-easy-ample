@@ -8,6 +8,7 @@ const navigation = [
     { name: 'Contacts', href: '/contacts', icon: 'Users' },
     { name: 'Deals', href: '/deals', icon: 'DollarSign' },
     { name: 'Tasks', href: '/tasks', icon: 'CheckSquare' },
+    { name: 'Custom Fields', href: '/custom-fields', icon: 'Sliders' },
     { name: 'Reports', href: '/reports', icon: 'FileText' },
   ]
 
