@@ -3,8 +3,8 @@ import { motion } from 'framer-motion'
 import { toast } from 'react-toastify'
 import Header from '@/components/organisms/Header'
 import TaskList from '@/components/organisms/TaskList'
+import KanbanBoard from '@/components/organisms/KanbanBoard'
 import Button from '@/components/atoms/Button'
-
 const Tasks = () => {
   const [view, setView] = useState('list')
 
@@ -57,7 +57,14 @@ const [showAddForm, setShowAddForm] = useState(false)
               icon="List"
               onClick={() => setView('list')}
             >
-              List View
+List View
+            </Button>
+            <Button
+              variant={view === 'kanban' ? 'primary' : 'ghost'}
+              icon="Columns"
+              onClick={() => setView('kanban')}
+            >
+              Kanban View
             </Button>
             <Button
               variant={view === 'calendar' ? 'primary' : 'ghost'}
@@ -75,9 +82,14 @@ const [showAddForm, setShowAddForm] = useState(false)
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-        >
+>
 {view === 'list' ? (
             <TaskList 
+              showAddForm={showAddForm}
+              onAddFormClose={() => setShowAddForm(false)}
+            />
+          ) : view === 'kanban' ? (
+            <KanbanBoard 
               showAddForm={showAddForm}
               onAddFormClose={() => setShowAddForm(false)}
             />

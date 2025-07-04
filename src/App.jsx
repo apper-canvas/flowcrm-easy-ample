@@ -10,6 +10,7 @@ import Contacts from '@/components/pages/Contacts'
 import ContactDetail from '@/components/pages/ContactDetail'
 import Deals from '@/components/pages/Deals'
 import Tasks from '@/components/pages/Tasks'
+import KanbanBoard from '@/components/organisms/KanbanBoard'
 import Reports from '@/components/pages/Reports'
 import Login from '@/components/pages/Login'
 import Signup from '@/components/pages/Signup'
@@ -134,9 +135,10 @@ function AppContent() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="contacts" element={<Contacts />} />
-            <Route path="contacts/:id" element={<ContactDetail />} />
+<Route path="contacts/:id" element={<ContactDetail />} />
             <Route path="deals" element={<Deals />} />
             <Route path="tasks" element={<Tasks />} />
+            <Route path="kanban" element={<KanbanBoard />} />
             <Route path="reports" element={<Reports />} />
           </Route>
         </Routes>
