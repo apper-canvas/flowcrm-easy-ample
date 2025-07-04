@@ -1,0 +1,74 @@
+[
+  {
+    "Id": 1,
+    "title": "Follow up with TechCorp on contract terms",
+    "description": "Review and discuss final contract terms before closing",
+    "dueDate": "2024-03-10T17:00:00Z",
+    "status": "pending",
+    "priority": "high",
+    "relatedTo": "TechCorp Enterprise License"
+  },
+  {
+    "Id": 2,
+    "title": "Prepare demo for Innovate Labs",
+    "description": "Create customized demo showcasing startup-specific features",
+    "dueDate": "2024-03-15T14:00:00Z",
+    "status": "in-progress",
+    "priority": "medium",
+    "relatedTo": "Innovate Labs Startup Package"
+  },
+  {
+    "Id": 3,
+    "title": "Send proposal to Global Tech",
+    "description": "Finalize and send partnership proposal document",
+    "dueDate": "2024-03-05T12:00:00Z",
+    "status": "completed",
+    "priority": "high",
+    "relatedTo": "Global Tech Partnership Deal"
+  },
+  {
+    "Id": 4,
+    "title": "Schedule onboarding call with StartupX",
+    "description": "Coordinate onboarding process for new client",
+    "dueDate": "2024-03-08T10:00:00Z",
+    "status": "pending",
+    "priority": "medium",
+    "relatedTo": "StartupX Growth Plan"
+  },
+  {
+    "Id": 5,
+    "title": "Research Enterprise Solutions requirements",
+    "description": "Gather detailed requirements for integration project",
+    "dueDate": "2024-03-20T16:00:00Z",
+    "status": "pending",
+    "priority": "low",
+    "relatedTo": "Enterprise Solutions Integration"
+  },
+  {
+    "Id": 6,
+    "title": "Create healthcare compliance report",
+    "description": "Prepare compliance documentation for MedTech",
+    "dueDate": "2024-03-12T15:00:00Z",
+    "status": "in-progress",
+    "priority": "high",
+    "relatedTo": "MedTech Healthcare Platform"
+  },
+  {
+    "Id": 7,
+    "title": "Review financial regulations with legal team",
+    "description": "Ensure compliance with financial industry regulations",
+    "dueDate": "2024-03-18T11:00:00Z",
+    "status": "pending",
+    "priority": "high",
+    "relatedTo": "Financial Services Compliance"
+  },
+  {
+    "Id": 8,
+    "title": "Prepare educational content samples",
+    "description": "Create sample educational content for EduTech demo",
+    "dueDate": "2024-03-25T13:00:00Z",
+    "status": "pending",
+    "priority": "medium",
+    "relatedTo": "EduTech Learning Management"
+  }
+]

@@ -1,0 +1,86 @@
+[
+  {
+    "Id": 1,
+    "type": "email",
+    "description": "Sent contract proposal to TechCorp",
+    "timestamp": "2024-03-01T10:30:00Z",
+    "relatedId": 1
+  },
+  {
+    "Id": 2,
+    "type": "call",
+    "description": "Discovery call with Innovate Labs team",
+    "timestamp": "2024-03-02T14:15:00Z",
+    "relatedId": 2
+  },
+  {
+    "Id": 3,
+    "type": "meeting",
+    "description": "Partnership discussion with Global Tech executives",
+    "timestamp": "2024-03-03T11:00:00Z",
+    "relatedId": 3
+  },
+  {
+    "Id": 4,
+    "type": "email",
+    "description": "Welcome email sent to StartupX",
+    "timestamp": "2024-03-01T09:45:00Z",
+    "relatedId": 4
+  },
+  {
+    "Id": 5,
+    "type": "note",
+    "description": "Added notes from Enterprise Solutions requirements meeting",
+    "timestamp": "2024-03-04T16:20:00Z",
+    "relatedId": 5
+  },
+  {
+    "Id": 6,
+    "type": "call",
+    "description": "Technical discussion with MedTech CTO",
+    "timestamp": "2024-03-05T13:30:00Z",
+    "relatedId": 6
+  },
+  {
+    "Id": 7,
+    "type": "email",
+    "description": "Sent compliance documentation to Financial Services",
+    "timestamp": "2024-03-06T15:45:00Z",
+    "relatedId": 7
+  },
+  {
+    "Id": 8,
+    "type": "meeting",
+    "description": "Product demo for EduTech stakeholders",
+    "timestamp": "2024-03-07T12:00:00Z",
+    "relatedId": 8
+  },
+  {
+    "Id": 9,
+    "type": "deal",
+    "description": "Deal stage updated to negotiation",
+    "timestamp": "2024-03-08T10:15:00Z",
+    "relatedId": 1
+  },
+  {
+    "Id": 10,
+    "type": "contact",
+    "description": "Contact information updated",
+    "timestamp": "2024-03-09T14:30:00Z",
+    "relatedId": 2
+  },
+  {
+    "Id": 11,
+    "type": "task",
+    "description": "Task marked as completed",
+    "timestamp": "2024-03-10T11:45:00Z",
+    "relatedId": 3
+  },
+  {
+    "Id": 12,
+    "type": "email",
+    "description": "Follow-up email sent to prospects",
+    "timestamp": "2024-03-11T16:00:00Z",
+    "relatedId": 4
+  }
+]

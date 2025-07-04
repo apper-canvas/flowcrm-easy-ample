@@ -1,0 +1,82 @@
+[
+  {
+    "Id": 1,
+    "name": "John Smith",
+    "email": "john.smith@techcorp.com",
+    "phone": "(555) 123-4567",
+    "company": "TechCorp Solutions",
+    "tags": ["customer", "enterprise"],
+    "status": "active",
+    "createdAt": "2024-01-15T10:30:00Z"
+  },
+  {
+    "Id": 2,
+    "name": "Sarah Johnson",
+    "email": "sarah.johnson@innovate.io",
+    "phone": "(555) 234-5678",
+    "company": "Innovate Labs",
+    "tags": ["lead", "startup"],
+    "status": "active",
+    "createdAt": "2024-01-20T14:45:00Z"
+  },
+  {
+    "Id": 3,
+    "name": "Michael Chen",
+    "email": "m.chen@globaltech.com",
+    "phone": "(555) 345-6789",
+    "company": "Global Tech Industries",
+    "tags": ["partner", "enterprise"],
+    "status": "active",
+    "createdAt": "2024-01-25T09:15:00Z"
+  },
+  {
+    "Id": 4,
+    "name": "Emily Rodriguez",
+    "email": "emily.r@startupx.com",
+    "phone": "(555) 456-7890",
+    "company": "StartupX",
+    "tags": ["customer", "startup"],
+    "status": "active",
+    "createdAt": "2024-02-01T11:20:00Z"
+  },
+  {
+    "Id": 5,
+    "name": "David Wilson",
+    "email": "david.wilson@enterprise.com",
+    "phone": "(555) 567-8901",
+    "company": "Enterprise Solutions",
+    "tags": ["lead", "enterprise"],
+    "status": "inactive",
+    "createdAt": "2024-02-05T16:30:00Z"
+  },
+  {
+    "Id": 6,
+    "name": "Lisa Anderson",
+    "email": "lisa.anderson@medtech.com",
+    "phone": "(555) 678-9012",
+    "company": "MedTech Innovations",
+    "tags": ["customer", "healthcare"],
+    "status": "active",
+    "createdAt": "2024-02-10T13:45:00Z"
+  },
+  {
+    "Id": 7,
+    "name": "Robert Taylor",
+    "email": "robert.taylor@finserv.com",
+    "phone": "(555) 789-0123",
+    "company": "Financial Services Inc",
+    "tags": ["partner", "finance"],
+    "status": "active",
+    "createdAt": "2024-02-15T08:30:00Z"
+  },
+  {
+    "Id": 8,
+    "name": "Amanda White",
+    "email": "amanda.white@edutech.com",
+    "phone": "(555) 890-1234",
+    "company": "EduTech Solutions",
+    "tags": ["lead", "education"],
+    "status": "active",
+    "createdAt": "2024-02-20T15:20:00Z"
+  }
+]
