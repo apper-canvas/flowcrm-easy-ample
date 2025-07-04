@@ -94,7 +94,7 @@ class TaskService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Name: taskData.Name || taskData.title,
           title: taskData.title,
           description: taskData.description,
@@ -103,7 +103,7 @@ class TaskService {
           priority: taskData.priority,
           relatedTo: taskData.relatedTo,
           Tags: Array.isArray(taskData.Tags) ? taskData.Tags.join(',') : taskData.Tags,
-          Owner: taskData.Owner
+          Owner: parseInt(taskData.Owner) || null
         }]
       }
       
@@ -147,7 +147,7 @@ class TaskService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Id: id,
           Name: taskData.Name || taskData.title,
           title: taskData.title,
@@ -157,7 +157,7 @@ class TaskService {
           priority: taskData.priority,
           relatedTo: taskData.relatedTo,
           Tags: Array.isArray(taskData.Tags) ? taskData.Tags.join(',') : taskData.Tags,
-          Owner: taskData.Owner
+          Owner: parseInt(taskData.Owner) || null
         }]
       }
       

@@ -111,7 +111,7 @@ records: [{
           probability: parseInt(dealData.probability) || 0,
           expectedClose: dealData.expectedClose,
           Tags: Array.isArray(dealData.Tags) ? dealData.Tags.join(',') : dealData.Tags,
-          Owner: dealData.Owner,
+          Owner: parseInt(dealData.Owner) || null,
           contactId: parseInt(dealData.contactId) || null
         }]
       }
@@ -166,7 +166,7 @@ records: [{
           probability: parseInt(dealData.probability) || 0,
           expectedClose: dealData.expectedClose,
           Tags: Array.isArray(dealData.Tags) ? dealData.Tags.join(',') : dealData.Tags,
-          Owner: dealData.Owner,
+          Owner: parseInt(dealData.Owner) || null,
           contactId: parseInt(dealData.contactId) || null
         }]
       }

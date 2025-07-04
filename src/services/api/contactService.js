@@ -92,14 +92,14 @@ class ContactService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Name: contactData.Name || contactData.name,
           email: contactData.email,
           phone: contactData.phone,
           company: contactData.company,
           Tags: Array.isArray(contactData.Tags) ? contactData.Tags.join(',') : contactData.Tags,
           status: contactData.status,
-          Owner: contactData.Owner
+          Owner: parseInt(contactData.Owner) || null
         }]
       }
       
@@ -143,7 +143,7 @@ class ContactService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Id: id,
           Name: contactData.Name || contactData.name,
           email: contactData.email,
@@ -151,7 +151,7 @@ class ContactService {
           company: contactData.company,
           Tags: Array.isArray(contactData.Tags) ? contactData.Tags.join(',') : contactData.Tags,
           status: contactData.status,
-          Owner: contactData.Owner
+          Owner: parseInt(contactData.Owner) || null
         }]
       }
       
