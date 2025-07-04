@@ -266,7 +266,7 @@ const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAd
     setContacts(prev => [newContact, ...prev])
   }
 
-  const filteredContacts = contacts.filter(contact => {
+const filteredContacts = contacts.filter(contact => {
     const matchesSearch = !searchQuery || 
       contact.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       contact.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -275,7 +275,7 @@ const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAd
     const matchesFilters = filters.length === 0 || 
       filters.some(filter => 
         contact.status === filter || 
-        contact.tags.includes(filter)
+        (contact.tags || []).includes(filter)
       )
     
     return matchesSearch && matchesFilters
@@ -316,7 +316,7 @@ const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAd
                 </Badge>
               </div>
               
-              {contact.tags.length > 0 && (
+{contact.tags?.length > 0 && (
                 <div className="flex flex-wrap gap-1 mb-4">
                   {contact.tags.map((tag) => (
                     <Badge key={tag} variant="secondary" size="sm">
@@ -325,7 +325,6 @@ const ContactList = ({ searchQuery = '', filters = [], showAddForm = false, onAd
                   ))}
                 </div>
               )}
-              
               <div className="flex gap-2">
                 <Button
                   variant="primary"
