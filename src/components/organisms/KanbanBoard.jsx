@@ -404,9 +404,11 @@ const KanbanBoard = ({ showAddForm, onAddFormClose, entity = 'task' }) => {
         { id: 'proposal', title: 'Proposal', color: 'yellow-400' },
         { id: 'negotiation', title: 'Negotiation', color: 'orange-400' },
         { id: 'closed', title: 'Closed', color: 'green-400' }
-      ]
+]
     }
-}
+  }
+  
+  const loadItems = async () => {
     try {
       setLoading(true)
       setError('')
@@ -426,7 +428,6 @@ const KanbanBoard = ({ showAddForm, onAddFormClose, entity = 'task' }) => {
       setLoading(false)
     }
   }
-
 const loadBoardConfig = async () => {
     try {
       const configs = await kanbanViewService.getAll()
