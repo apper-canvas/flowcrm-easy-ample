@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import Header from '@/components/organisms/Header'
 import DealPipeline from '@/components/organisms/DealPipeline'
 import DealList from '@/components/organisms/DealList'
+import KanbanBoard from '@/components/organisms/KanbanBoard'
 import Button from '@/components/atoms/Button'
 
 const Deals = () => {
@@ -52,23 +53,30 @@ const [showAddForm, setShowAddForm] = useState(false)
       <div className="p-6 space-y-6">
         {/* View Toggle */}
         <div className="flex justify-between items-center">
-          <div className="flex gap-2">
-            <Button
-              variant={view === 'pipeline' ? 'primary' : 'ghost'}
-              icon="BarChart3"
-              onClick={() => setView('pipeline')}
-            >
-              Pipeline View
-            </Button>
-            <Button
-              variant={view === 'list' ? 'primary' : 'ghost'}
-              icon="List"
-              onClick={() => setView('list')}
-            >
-              List View
-            </Button>
-          </div>
+<div className="flex gap-2">
+          <Button
+            variant={view === 'pipeline' ? 'primary' : 'ghost'}
+            icon="BarChart3"
+            onClick={() => setView('pipeline')}
+          >
+            Pipeline View
+          </Button>
+          <Button
+            variant={view === 'list' ? 'primary' : 'ghost'}
+            icon="List"
+            onClick={() => setView('list')}
+          >
+            List View
+          </Button>
+          <Button
+            variant={view === 'kanban' ? 'primary' : 'ghost'}
+            icon="Columns"
+            onClick={() => setView('kanban')}
+          >
+            Kanban View
+          </Button>
         </div>
+      </div>
 
         {/* Content */}
         <motion.div
@@ -78,16 +86,21 @@ const [showAddForm, setShowAddForm] = useState(false)
           transition={{ duration: 0.3 }}
         >
 {view === 'pipeline' ? (
-            <DealPipeline 
-              showAddForm={showAddForm}
-              onAddFormClose={() => setShowAddForm(false)}
-            />
-          ) : (
-            <DealList 
-              showAddForm={showAddForm}
-              onAddFormClose={() => setShowAddForm(false)}
-            />
-          )}
+          <DealPipeline 
+            showAddForm={showAddForm}
+            onAddFormClose={() => setShowAddForm(false)}
+          />
+        ) : view === 'list' ? (
+          <DealList 
+            showAddForm={showAddForm}
+            onAddFormClose={() => setShowAddForm(false)}
+          />
+        ) : (
+          <KanbanBoard 
+            showAddForm={showAddForm}
+            onAddFormClose={() => setShowAddForm(false)}
+          />
+        )}
         </motion.div>
       </div>
     </div>
