@@ -95,8 +95,9 @@ const [showAddForm, setShowAddForm] = useState(false)
             showAddForm={showAddForm}
             onAddFormClose={() => setShowAddForm(false)}
           />
-        ) : (
+) : (
           <KanbanBoard 
+            entity="deal"
             showAddForm={showAddForm}
             onAddFormClose={() => setShowAddForm(false)}
           />
