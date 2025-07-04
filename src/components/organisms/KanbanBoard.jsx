@@ -476,10 +476,11 @@ useEffect(() => {
 const handleDrop = async (e, newStatus) => {
     e.preventDefault()
     
+    const statusField = getStatusField()
+    
     try {
       const itemData = JSON.parse(e.dataTransfer.getData('text/plain'))
       const itemId = itemData.Id
-      const statusField = getStatusField()
       
       if (itemData[statusField] === newStatus) {
         return // No change needed
