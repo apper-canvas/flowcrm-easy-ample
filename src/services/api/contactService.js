@@ -225,9 +225,8 @@ records: [{
         console.error("Error deleting contact:", error?.response?.data?.message)
       } else {
         console.error(error.message)
-      }
+}
       return false
-return false
     }
   }
 

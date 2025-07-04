@@ -834,13 +834,12 @@ return (
                       Edit
                     </Button>
                     <Button
-                      variant="ghost"
+variant="ghost"
                       size="sm"
                       icon="Trash2"
                       onClick={() => handleDelete(deal.Id)}
                       className="text-error hover:text-error hover:bg-red-50"
                     />
-/>
                   </div>
                 </Card>
                 </motion.div>
