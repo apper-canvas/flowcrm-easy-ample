@@ -22,11 +22,12 @@ class DealService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
           { field: { Name: "value" } },
           { field: { Name: "stage" } },
+          { field: { Name: "status" } },
           { field: { Name: "probability" } },
           { field: { Name: "expectedClose" } },
           { field: { Name: "Tags" } },
@@ -62,11 +63,12 @@ class DealService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        fields: [
+fields: [
           { field: { Name: "Name" } },
           { field: { Name: "title" } },
           { field: { Name: "value" } },
           { field: { Name: "stage" } },
+          { field: { Name: "status" } },
           { field: { Name: "probability" } },
           { field: { Name: "expectedClose" } },
           { field: { Name: "Tags" } },
@@ -100,11 +102,12 @@ class DealService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Name: dealData.Name || dealData.title,
           title: dealData.title,
           value: parseFloat(dealData.value) || 0,
           stage: dealData.stage,
+          status: dealData.status,
           probability: parseInt(dealData.probability) || 0,
           expectedClose: dealData.expectedClose,
           Tags: Array.isArray(dealData.Tags) ? dealData.Tags.join(',') : dealData.Tags,
@@ -153,12 +156,13 @@ class DealService {
       if (!this.apperClient) this.initClient()
       
       const params = {
-        records: [{
+records: [{
           Id: id,
           Name: dealData.Name || dealData.title,
           title: dealData.title,
           value: parseFloat(dealData.value) || 0,
           stage: dealData.stage,
+          status: dealData.status,
           probability: parseInt(dealData.probability) || 0,
           expectedClose: dealData.expectedClose,
           Tags: Array.isArray(dealData.Tags) ? dealData.Tags.join(',') : dealData.Tags,

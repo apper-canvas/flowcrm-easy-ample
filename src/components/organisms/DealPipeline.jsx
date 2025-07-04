@@ -1,25 +1,26 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
-import dealService from '@/services/api/dealService'
-import contactService from '@/services/api/contactService'
-import Card from '@/components/atoms/Card'
-import Badge from '@/components/atoms/Badge'
-import Button from '@/components/atoms/Button'
-import Input from '@/components/atoms/Input'
-import Select from '@/components/atoms/Select'
-import ApperIcon from '@/components/ApperIcon'
-import Loading from '@/components/ui/Loading'
-import Error from '@/components/ui/Error'
-import Empty from '@/components/ui/Empty'
+import React, { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { toast } from "react-toastify";
+import ApperIcon from "@/components/ApperIcon";
+import Badge from "@/components/atoms/Badge";
+import Select from "@/components/atoms/Select";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Input from "@/components/atoms/Input";
+import Empty from "@/components/ui/Empty";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
+import contactService from "@/services/api/contactService";
+import dealService from "@/services/api/dealService";
 
 const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     title: '',
     contactId: '',
     value: '',
     probability: 50,
     stage: 'lead',
+    status: 'New',
     expectedClose: ''
   })
   const [loading, setLoading] = useState(false)
@@ -66,12 +67,13 @@ const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
       const newDeal = await dealService.create(dealData)
       toast.success('Deal created successfully!')
       
-      setFormData({
+setFormData({
         title: '',
         contactId: '',
         value: '',
         probability: 50,
         stage: 'lead',
+        status: 'New',
         expectedClose: ''
       })
       
@@ -189,6 +191,21 @@ const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
                     { value: 'negotiation', label: 'Negotiation' },
                     { value: 'closed', label: 'Closed' }
                   ]}
+/>
+              </div>
+
+              <div>
+                <Select
+                  label="Status"
+                  value={formData.status}
+                  onChange={(value) => handleChange('status', value)}
+                  options={[
+                    { value: 'New', label: 'New' },
+                    { value: 'In Progress', label: 'In Progress' },
+                    { value: 'On Hold', label: 'On Hold' },
+                    { value: 'Completed', label: 'Completed' },
+                    { value: 'Cancelled', label: 'Cancelled' }
+                  ]}
                 />
               </div>
 
@@ -199,7 +216,7 @@ const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
                   value={formData.expectedClose}
                   onChange={(e) => handleChange('expectedClose', e.target.value)}
                   error={errors.expectedClose}
-                  required
+required
                 />
               </div>
 

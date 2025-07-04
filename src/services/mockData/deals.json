@@ -1,72 +1,80 @@
 [
   {
-    "Id": 1,
+"Id": 1,
     "title": "TechCorp Enterprise License",
     "value": 150000,
     "stage": "negotiation",
+    "status": "In Progress",
     "contactId": 1,
     "probability": 85,
     "expectedClose": "2024-03-15T23:59:59Z"
   },
   {
-    "Id": 2,
+"Id": 2,
     "title": "Innovate Labs Startup Package",
     "value": 25000,
     "stage": "qualified",
+    "status": "New",
     "contactId": 2,
     "probability": 60,
     "expectedClose": "2024-04-01T23:59:59Z"
   },
   {
-    "Id": 3,
+"Id": 3,
     "title": "Global Tech Partnership Deal",
     "value": 500000,
     "stage": "proposal",
+    "status": "In Progress",
     "contactId": 3,
     "probability": 70,
     "expectedClose": "2024-05-15T23:59:59Z"
   },
   {
-    "Id": 4,
+"Id": 4,
     "title": "StartupX Growth Plan",
     "value": 45000,
     "stage": "closed",
+    "status": "Completed",
     "contactId": 4,
     "probability": 100,
     "expectedClose": "2024-02-28T23:59:59Z"
   },
   {
-    "Id": 5,
+"Id": 5,
     "title": "Enterprise Solutions Integration",
     "value": 200000,
     "stage": "lead",
+    "status": "New",
     "contactId": 5,
     "probability": 30,
     "expectedClose": "2024-06-01T23:59:59Z"
   },
   {
-    "Id": 6,
+"Id": 6,
     "title": "MedTech Healthcare Platform",
     "value": 125000,
     "stage": "negotiation",
+    "status": "On Hold",
     "contactId": 6,
     "probability": 80,
     "expectedClose": "2024-03-30T23:59:59Z"
   },
   {
-    "Id": 7,
+"Id": 7,
     "title": "Financial Services Compliance",
     "value": 300000,
     "stage": "proposal",
+    "status": "In Progress",
     "contactId": 7,
     "probability": 65,
     "expectedClose": "2024-04-15T23:59:59Z"
   },
   {
-    "Id": 8,
+"Id": 8,
     "title": "EduTech Learning Management",
     "value": 75000,
     "stage": "qualified",
+    "status": "New",
     "contactId": 8,
     "probability": 55,
     "expectedClose": "2024-05-01T23:59:59Z"
