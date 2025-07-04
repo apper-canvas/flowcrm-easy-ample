@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { toast } from 'react-toastify'
 import Header from '@/components/organisms/Header'
 import DealPipeline from '@/components/organisms/DealPipeline'
+import DealList from '@/components/organisms/DealList'
 import Button from '@/components/atoms/Button'
 
 const Deals = () => {
@@ -82,11 +83,10 @@ const [showAddForm, setShowAddForm] = useState(false)
               onAddFormClose={() => setShowAddForm(false)}
             />
           ) : (
-            <div className="bg-white rounded-lg shadow-sm p-6">
-              <p className="text-gray-600 text-center">
-                List view coming soon!
-              </p>
-            </div>
+            <DealList 
+              showAddForm={showAddForm}
+              onAddFormClose={() => setShowAddForm(false)}
+            />
           )}
         </motion.div>
       </div>
