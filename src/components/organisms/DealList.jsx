@@ -142,9 +142,9 @@ const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
                   onChange={(value) => handleChange('contactId', value)}
                   options={[
                     { value: '', label: 'Select a contact' },
-                    ...contacts.map(contact => ({
+...contacts.map(contact => ({
                       value: contact.Id.toString(),
-                      label: `${contact.name} (${contact.company})`
+                      label: `${contact.Name} (${contact.company})`
                     }))
                   ]}
                   error={errors.contactId}
@@ -379,9 +379,9 @@ const EditDealForm = ({ isOpen, onClose, onDealUpdated, deal, contacts }) => {
                   onChange={(value) => handleChange('contactId', value)}
                   options={[
                     { value: '', label: 'Select a contact' },
-                    ...contacts.map(contact => ({
+...contacts.map(contact => ({
                       value: contact.Id.toString(),
-                      label: `${contact.name} (${contact.company})`
+                      label: `${contact.Name} (${contact.company})`
                     }))
                   ]}
                   error={errors.contactId}
@@ -541,9 +541,9 @@ const DealList = ({ searchQuery = '', filters = [], showAddForm = false, onAddFo
     setDeals(prev => prev.map(deal => deal.Id === updatedDeal.Id ? updatedDeal : deal))
   }
 
-  const getContactName = (contactId) => {
+const getContactName = (contactId) => {
     const contact = contacts.find(c => c.Id === contactId)
-    return contact ? contact.name : 'Unknown Contact'
+    return contact ? contact.Name : 'Unknown Contact'
   }
 
   const getContactCompany = (contactId) => {

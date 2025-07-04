@@ -142,7 +142,7 @@ const AddDealForm = ({ isOpen, onClose, onDealAdded, contacts }) => {
                   label="Contact"
                   value={formData.contactId}
                   onChange={(value) => handleChange('contactId', value)}
-                  options={[
+options={[
                     { value: '', label: 'Select a contact' },
                     ...contacts.map(contact => ({
                       value: contact.Id.toString(),

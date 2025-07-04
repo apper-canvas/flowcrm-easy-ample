@@ -142,9 +142,9 @@ setFormData({
                   onChange={(value) => handleChange('contactId', value)}
                   options={[
                     { value: '', label: 'Select a contact' },
-                    ...contacts.map(contact => ({
+...contacts.map(contact => ({
                       value: contact.Id.toString(),
-                      label: `${contact.name} (${contact.company})`
+                      label: `${contact.Name} (${contact.company})`
                     }))
                   ]}
                   error={errors.contactId}
@@ -298,9 +298,9 @@ const DealPipeline = ({ showAddForm = false, onAddFormClose }) => {
     setDeals(prev => [newDeal, ...prev])
   }
 
-  const getContactName = (contactId) => {
+const getContactName = (contactId) => {
     const contact = contacts.find(c => c.Id === contactId)
-    return contact ? contact.name : 'Unknown Contact'
+    return contact ? contact.Name : 'Unknown Contact'
   }
 
   if (loading) return <Loading />
