@@ -31,10 +31,10 @@ const Select = ({
         </label>
       )}
       <div className="relative">
-        <motion.select
+<motion.select
           whileFocus={{ scale: 1.01 }}
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange(e.target?.value || e)}
           required={required}
           disabled={disabled}
           className={selectClasses}
