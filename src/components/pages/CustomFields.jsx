@@ -16,34 +16,31 @@ import Empty from '@/components/ui/Empty'
 import customFieldService from '@/services/api/customFieldService'
 
 const CustomFieldForm = ({ isOpen, onClose, field = null, onFieldSaved }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     Name: '',
     label: '',
     type: 'Text',
     visibility: 'Public',
-    app_contact: '',
     Tags: ''
   })
   const [loading, setLoading] = useState(false)
   const [errors, setErrors] = useState({})
 
-  useEffect(() => {
+useEffect(() => {
     if (field) {
       setFormData({
         Name: field.Name || '',
         label: field.label || '',
         type: field.type || 'Text',
         visibility: field.visibility || 'Public',
-        app_contact: field.app_contact || '',
         Tags: Array.isArray(field.Tags) ? field.Tags.join(', ') : field.Tags || ''
       })
     } else {
-      setFormData({
+setFormData({
         Name: '',
         label: '',
         type: 'Text',
         visibility: 'Public',
-        app_contact: '',
         Tags: ''
       })
     }
@@ -186,15 +183,6 @@ const CustomFieldForm = ({ isOpen, onClose, field = null, onFieldSaved }) => {
                 />
               </div>
 
-              <div>
-                <Input
-                  label="Associated Contact ID"
-                  type="number"
-                  value={formData.app_contact}
-                  onChange={(e) => handleChange('app_contact', e.target.value)}
-                  placeholder="Enter contact ID (optional)"
-                />
-              </div>
 
               <div>
                 <Input
