@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import ApperIcon from '@/components/ApperIcon'
+import { motion } from "framer-motion";
+import React from "react";
+import ApperIcon from "@/components/ApperIcon";
 
 const Button = ({ 
   children, 
@@ -8,6 +9,7 @@ const Button = ({
   icon = null, 
   iconPosition = 'left',
   disabled = false,
+  loading = false,
   onClick,
   type = 'button',
   className = '',
@@ -32,25 +34,37 @@ const Button = ({
     xl: 'px-8 py-4 text-lg'
   }
   
-  const disabledClasses = disabled 
+  const isDisabled = disabled || loading
+  const disabledClasses = isDisabled 
     ? 'opacity-50 cursor-not-allowed' 
     : 'hover:scale-105 active:scale-95'
   
   const combinedClasses = `${baseClasses} ${variants[variant]} ${sizes[size]} ${disabledClasses} ${className}`
   
+  // Filter out non-DOM props to prevent React warnings
+  const {
+    loading: _loading,
+    variant: _variant,
+    size: _size,
+    icon: _icon,
+    iconPosition: _iconPosition,
+    ...domProps
+  } = props
+  
   return (
     <motion.button
-      whileHover={disabled ? {} : { scale: 1.02 }}
-      whileTap={disabled ? {} : { scale: 0.98 }}
+      whileHover={isDisabled ? {} : { scale: 1.02 }}
+      whileTap={isDisabled ? {} : { scale: 0.98 }}
       className={combinedClasses}
       onClick={onClick}
-      disabled={disabled}
+      disabled={isDisabled}
       type={type}
-      {...props}
+      {...domProps}
     >
-      {icon && iconPosition === 'left' && <ApperIcon name={icon} size={16} />}
-      {children}
-      {icon && iconPosition === 'right' && <ApperIcon name={icon} size={16} />}
+      {loading && <ApperIcon name="Loader2" size={16} className="animate-spin" />}
+      {!loading && icon && iconPosition === 'left' && <ApperIcon name={icon} size={16} />}
+{!loading && children}
+      {!loading && icon && iconPosition === 'right' && <ApperIcon name={icon} size={16} />}
     </motion.button>
   )
 }
